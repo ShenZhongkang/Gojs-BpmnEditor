@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>BPMN-FLOW</title>
+  <link rel="stylesheet" href="./css/jquery-ui.min.css">
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/jquery-ui.min.js"></script>
+  <script src="./js/go.js"></script>
+  <script src="./js/drawCommandHandler.js"></script>
+  <link rel="stylesheet" href="./css/bpmn.css">
+  <script src="./js/bpmnClasses.js"></script>
+  <script src="./js/bpmn.js"></script>
+</head>
+<body onload="init()">
+  <div>
+    <div id="currentFile">(未保存文件)</div>
+    <!-- MenuBar Begin -->
+    <!--
+    <ul id="menuui">
+      <li>
+        <a href="#">文件</a>
+        <ul>
+          <li><a href="#">新建</a></li>
+          <li><a href="#">打开</a></li>
+          <li><a href="#">保存</a></li>
+          <li><a href="#">另存为</a></li>
+          <li><a href="#">删除</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">编辑</a>
+        <ul>
+          <li><a href="#">撤销</a></li>
+          <li><a href="#">重做</a></li>
+          <li><a href="#">剪切</a></li>
+          <li><a href="#">复制</a></li>
+          <li><a href="#">粘贴</a></li>
+          <li><a href="#">删除</a></li>
+          <li><a href="#">全选</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">对齐</a>
+        <ul>
+          <li><a href="#">左对齐</a></li>
+          <li><a href="#">右对齐</a></li>
+          <li><a href="#">上对齐</a></li>
+          <li><a href="#">下对齐</a></li>
+          <li><a href="#">水平居中</a></li>
+          <li><a href="#">垂直居中</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">间距</a>
+        <ul>
+          <li><a href="#">行间距</a></li>
+          <li><a href="#">列间距</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">选项</a>
+        <ul>
+          <li><a href="#"><input type="checkbox" name='options' value='grid'>栅格</a></li>
+          <li><a href="#"><input type="checkbox" name='options' value='0'>吸附</a></li>
+        </ul>
+      </li>
+    </ul>
+    -->
+    <!-- MenuBar End -->
+    <div id="PaletteAndDiagram">
+      <div id="sideBar">
+        <span style='display: inline-block; vertical-align: top;  padding: 5px; width: 100%;'>
+          <div id="accordion">
+            <h4>一级项目</h4>
+            <div>
+              <div id="myPaletteLevel1" class="myPaletteDiv"></div>
+            </div>
+            <h4>二级项目</h4>
+            <div>
+              <div id="myPaletteLevel2" class="myPaletteDiv"></div>
+            </div>
+            <h4>其他项目</h4>
+            <div>
+              <div id="myPaletteLevel3" class="myPaletteDiv"></div>
+            </div>
+          </div>
+        </span>
+        <div class="handle">预览: </div>
+        <div id="myOverviewDiv"></div>
+      </div>
+      <div id="myDiagramDiv"></div>
+      <div id="description">
+        <p>
+          This sample describes templates and relationships typically used in <a href="https://en.wikipedia.org/wiki/Business_Process_Model_and_Notation">Business Process Model and Notation (BPMN)</a>,
+          to be used as a starting point for developing BPMN or flow-like web applications.
+        </p>
+        <p>In addition to this HTML file, this sample uses the files:</p>
+        <ul>
+          <li><a href="BPMN.css">BPMN.css</a> for styling
+          <li><a href="BPMN.js">BPMN.js</a> for the Diagram logic
+          <li><a href="BPMNClasses.js">BPMNClasses.js</a> - Custom PoolLink and BPMNLinkingTool classes
+          <li><a href="DrawCommandHandler.js">DrawCommandHandler.js</a> - Custom CommandHandler class
+        </ul>
+        <span>
+            <div>
+            <p>Additional sample data files:</p>
+                <figure>
+                    <img src="BPMNdata/BasicOrderProcess.png" onclick='loadJSON("BPMNdata/BasicOrderProcess.json")' title="Basic Order Process" />
+                    <figcaption>Basic Order Process</figcaption>
+                </figure>
+                <figure>
+                    <img src="BPMNdata/OMG BPMN by Example Figure 5.1.png" onclick='loadJSON("BPMNdata/OMG BPMN by Example Figure 5.1.json")' title="OMG BPMN by Example Figure 5.1" />
+                    <figcaption>OMG BPMN by Example Figure 5.1</figcaption>
+                </figure>
+                <figure>
+                    <img src="BPMNdata/OMG BPMN by Example Figure 5.2.png" onclick='loadJSON("BPMNdata/OMG BPMN by Example Figure 5.2.json")' title="OMG BPMN by Example Figure 5.2" />
+                    <figcaption>OMG BPMN by Example Figure 5.2</figcaption>
+                </figure>
+                <figure>
+                    <img src="BPMNdata/OMG BPMN by Example Figure 5.3.png" onclick='loadJSON("BPMNdata/OMG BPMN by Example Figure 5.3.json")' title="OMG BPMN by Example Figure 5.3" />
+                    <figcaption>OMG BPMN by Example Figure 5.3</figcaption>
+                </figure>
+          </div>
+        </span>
+      </div>
+
+    </div>
+    <div id="openDocument" class="draggable">
+      <div id="openDraggableHandle" class="handle">打开文件</div>
+      <div id="openText" class="elementText">选择打开文件</div>
+      <select id="mySavedFiles" class="mySavedFiles"></select>
+      <br>
+      <button id="openBtn" class="elementBtn" type="button">打开</button>
+      <button id="cancelBtn" class="elementBtn" type="button">取消</button>
+    </div>
+    <div id="removeDocument" class="draggable">
+      <div id="removeDraggableHandle" class="handle">移除文件</div>
+      <div id="removeText" class="elementText">选择要移除的文件</div>
+      <select id="mySavedFile2" class="mySavedFiles"></select>
+      <br>
+      <button id="removeBtn" class="elementBtn" type="button">移除</button>
+      <button id="cancelBtn" class="elementBtn" type="button">取消</button>
+    </div>
+  </div>
+</body>
+</html>
